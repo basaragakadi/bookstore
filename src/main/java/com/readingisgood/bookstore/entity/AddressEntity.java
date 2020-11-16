@@ -18,6 +18,8 @@ import lombok.NoArgsConstructor;
 /**
  * @author basaragakadi
  *
+ * Entity claass for address table in h2 database
+ *
  */
 @Entity
 @Table(name = "address")

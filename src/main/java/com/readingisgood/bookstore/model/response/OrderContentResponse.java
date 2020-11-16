@@ -14,6 +14,8 @@ import lombok.Data;
 /**
  * @author basaragakadi
  *
+ * Class for representing order content response
+ *
  */
 @Data
 @Builder

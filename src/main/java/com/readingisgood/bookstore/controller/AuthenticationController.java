@@ -15,7 +15,9 @@ import lombok.AllArgsConstructor;
 
 /**
  * @author basaragakadi
- *
+ * 
+ * Controller class for authentication
+ * 
  */
 @RestController
 @AllArgsConstructor

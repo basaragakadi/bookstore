@@ -21,6 +21,8 @@ import lombok.NoArgsConstructor;
 /**
  * @author basaragakadi
  *
+ * Entity class for orders table in h2 database
+ *
  */
 @Entity
 @Table(name = "orders")

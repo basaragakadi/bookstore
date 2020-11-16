@@ -3,6 +3,8 @@ package com.readingisgood.bookstore.exception;
 /**
  * @author basaragakadi
  *
+ * Exception class for preventing duplicate user registration
+ *
  */
 public class UserAlreadyExistsException extends Exception {
 

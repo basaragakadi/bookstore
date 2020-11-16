@@ -19,6 +19,9 @@ import lombok.AllArgsConstructor;
 /**
  * @author basaragakadi
  * 
+ * Class for security configuration.
+ * To make endpoint(s) available for unauthenticated users configuration will be handled here.
+ * 
  */
 @SuppressWarnings("deprecation")
 @EnableWebSecurity
@@ -53,7 +56,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	}
 
 	/*
-	 * Enabled h2-console for unauthenticated users in order to be able to see the database
+	 * Enabled h2-console for unauthenticated users
 	 */
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -61,7 +64,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 	}
 	
 	/*
-	 * Warning suppressed because in this project there is no need for a password encoding.
+	 * Warning suppressed because in this project there is no need for a password encoding
+	 * that is because it is a study project
 	 * TODO Use an encoder
 	 */
 	@Bean

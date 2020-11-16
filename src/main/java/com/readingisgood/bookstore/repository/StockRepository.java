@@ -13,6 +13,8 @@ import com.readingisgood.bookstore.entity.StockEntity;
 /**
  * @author basaragakadi
  *
+ * Interface for stock repository
+ *
  */
 @Repository
 public interface StockRepository extends JpaRepository<StockEntity, Long> {

@@ -6,6 +6,8 @@ package com.readingisgood.bookstore.exception;
 /**
  * @author basaragakadi
  *
+ * Exception class for insufficient stock count
+ *
  */
 public class InsufficientStockCountException extends Exception {
 

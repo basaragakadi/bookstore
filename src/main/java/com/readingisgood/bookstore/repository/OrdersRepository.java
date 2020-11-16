@@ -13,6 +13,8 @@ import com.readingisgood.bookstore.entity.OrderEntity;
 /**
  * @author basaragakadi
  *
+ * Interface for orders repository
+ *
  */
 @Repository
 public interface OrdersRepository extends JpaRepository<OrderEntity, Long> {

@@ -11,6 +11,8 @@ import com.readingisgood.bookstore.entity.AddressEntity;
 /**
  * @author basaragakadi
  *
+ * Interface for address repository
+ *
  */
 @Repository
 public interface AddressRepository extends JpaRepository<AddressEntity, Long> {

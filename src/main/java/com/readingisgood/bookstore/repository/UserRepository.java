@@ -8,6 +8,8 @@ import com.readingisgood.bookstore.entity.UserEntity;
 /**
  * @author basaragakadi
  *
+ * Interface for user repository
+ *
  */
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Long> {

@@ -13,6 +13,8 @@ import lombok.Data;
 /**
  * @author basaragakadi
  *
+ * Class for representing order response
+ *
  */
 @Data
 @Builder

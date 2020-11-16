@@ -6,6 +6,8 @@ package com.readingisgood.bookstore.exception;
 /**
  * @author basaragakadi
  *
+ * Exception class for errors faced when inserting a new user entity
+ *
  */
 public class UserNotInsertedException extends Exception {
 

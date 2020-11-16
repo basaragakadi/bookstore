@@ -11,6 +11,8 @@ import com.readingisgood.bookstore.entity.BookEntity;
 /**
  * @author basaragakadi
  *
+ * Interface for book repository
+ *
  */
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long> {

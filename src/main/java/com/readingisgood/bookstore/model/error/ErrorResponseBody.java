@@ -9,6 +9,8 @@ import lombok.Data;
 /**
  * @author basaragakadi
  *
+ * Class for representing error responses
+ *
  */
 @Data
 @Builder

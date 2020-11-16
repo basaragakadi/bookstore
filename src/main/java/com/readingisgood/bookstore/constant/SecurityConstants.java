@@ -6,6 +6,8 @@ package com.readingisgood.bookstore.constant;
 /**
  * @author basaragakadi
  *
+ * Constant class for holding security constant values which are used for security configuration.
+ *
  */
 public final class SecurityConstants {
 

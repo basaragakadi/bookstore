@@ -6,6 +6,8 @@ import lombok.Data;
 /**
  * @author basaragakadi
  *
+ * Class for representing registration response
+ *
  */
 @Data
 @Builder

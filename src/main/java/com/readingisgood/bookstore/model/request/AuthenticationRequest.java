@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 /**
  * @author basaragakadi
  *
+ * Class for representing authentication requests
+ *
  */
 @Data
 @RequiredArgsConstructor

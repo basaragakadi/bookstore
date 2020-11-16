@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 /**
  * @author basaragakadi
  *
+ * Class for representing registration requests
+ *
  */
 @Data
 @RequiredArgsConstructor

@@ -19,7 +19,9 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author basaragakadi
- *
+ * 
+ * Entity class for book table in h2 database
+ * 
  */
 @Entity
 @Table(name = "book")

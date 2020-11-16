@@ -18,6 +18,8 @@ import lombok.NoArgsConstructor;
 /**
  * @author basaragakadi
  * 
+ * Entity class for stock table in h2 database
+ * 
  */
 @Entity
 @Table(name = "stock")

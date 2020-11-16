@@ -16,6 +16,9 @@ import lombok.AllArgsConstructor;
 /**
  * @author basaragakadi
  *
+ * Class for configuring UserDetailsService.
+ * loadByUsername method is overridden to authenticate users from database.
+ *
  */
 @Service
 @AllArgsConstructor

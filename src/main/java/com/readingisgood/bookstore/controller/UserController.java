@@ -16,7 +16,9 @@ import lombok.AllArgsConstructor;
 
 /**
  * @author basaragakadi
- *
+ * 
+ * Controller class for handling user endpoints
+ * 
  */
 @RestController
 @AllArgsConstructor

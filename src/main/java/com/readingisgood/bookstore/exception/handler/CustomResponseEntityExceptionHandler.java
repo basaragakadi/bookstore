@@ -23,6 +23,9 @@ import com.readingisgood.bookstore.model.error.ErrorResponseBody;
 /**
  * @author basaragakadi
  *
+ * Class for customizing ResponseEntityExceptionHandler
+ * Any Exception thrown and reaches to the controller is handled here
+ *
  */
 @ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {

@@ -28,7 +28,10 @@ import lombok.AllArgsConstructor;
 
 /**
  * @author basaragakadi
- *
+ * 
+ * Controller class for handling orders endpoints
+ * Endpoints require authorization header to extract username out of it and completes the operation with that unique username
+ * 
  */
 @RestController
 @AllArgsConstructor

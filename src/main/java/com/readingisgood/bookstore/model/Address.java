@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 /**
  * @author basaragakadi
  *
+ * Class for representing address model in requests
+ *
  */
 @Data
 @AllArgsConstructor

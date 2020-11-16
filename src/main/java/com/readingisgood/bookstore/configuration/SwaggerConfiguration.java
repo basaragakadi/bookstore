@@ -19,6 +19,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * @author basaragakadi
  *
+ * Class for configuring Swagger.
+ * url: localhost:8080/swagger-ui
+ *
  */
 @EnableSwagger2
 @Configuration
