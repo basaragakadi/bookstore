@@ -1,0 +1,78 @@
+package com.readingisgood.bookstore.util;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
+import com.readingisgood.bookstore.constant.SecurityConstants;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+/**
+ * @author basaragakadi
+ * 
+ */
+@Component
+public class JwtUtil {
+
+	private static final String SECRET_KEY = "SECRET";
+
+	public String extractUsername(String token) {
+		return extractClaim(token, Claims::getSubject);
+	}
+	
+	public String extractUsernameFromAuthorizationHeader(String authorizationHeader) {
+		return extractUsername(getTokenFromAuthorizationHeader(authorizationHeader));
+	}
+
+	public Date extractExpiration(String token) {
+		return extractClaim(token, Claims::getExpiration);
+	}
+
+	public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+		final Claims claims = extractAllClaims(token);
+		return claimsResolver.apply(claims);
+	}
+
+	private Claims extractAllClaims(String token) {
+		return Jwts.parser()
+				.setSigningKey(SECRET_KEY)
+				.parseClaimsJws(token)
+				.getBody();
+	}
+
+	private boolean isTokenExpired(String token) {
+		return extractExpiration(token).before(new Date());
+	}
+
+	public String generateToken(UserDetails userDetails) {
+		Map<String, Object> claims = new HashMap<>();
+		return createToken(claims, userDetails.getUsername());
+	}
+
+	private String createToken(Map<String, Object> claims, String subject) {
+		return Jwts.builder()
+				.setClaims(claims)
+				.setSubject(subject)
+				.setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new java.util.Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME_IN_MILLIS))
+				.signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+				.compact();
+	}
+
+	public boolean validateToken(String token, UserDetails userDetails) {
+		final String username = extractUsername(token);
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+	}
+
+	public String getTokenFromAuthorizationHeader(String authorizationHeader) {
+		return authorizationHeader.substring(7);
+	}
+
+}
