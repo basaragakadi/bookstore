@@ -16,10 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.readingisgood.bookstore.constant.SecurityConstants;
+import com.readingisgood.bookstore.exception.InsufficientStockCountException;
+import com.readingisgood.bookstore.exception.NoBooksFoundByBookIdsException;
+import com.readingisgood.bookstore.exception.NoOrderFoundException;
+import com.readingisgood.bookstore.exception.OrderNotFoundException;
+import com.readingisgood.bookstore.exception.OrderNotInsertedException;
+import com.readingisgood.bookstore.exception.StockNotFoundException;
+import com.readingisgood.bookstore.exception.UnableToGetOrderContentEntitiesException;
+import com.readingisgood.bookstore.exception.UnableToInsertOrderContentsException;
+import com.readingisgood.bookstore.exception.UserNotFoundException;
 import com.readingisgood.bookstore.model.request.NewOrderRequest;
 import com.readingisgood.bookstore.model.response.NewOrderResponse;
 import com.readingisgood.bookstore.model.response.OrderContentResponse;
 import com.readingisgood.bookstore.model.response.OrdersRespone;
+import com.readingisgood.bookstore.service.OrderContentService;
 import com.readingisgood.bookstore.service.OrdersService;
 import com.readingisgood.bookstore.util.JwtUtil;
 
@@ -40,10 +50,11 @@ public class OrdersController {
 
 	private JwtUtil jwtUtil;
 	private OrdersService ordersService;
+	private OrderContentService orderContentService;
 	
 	@ApiOperation("Lists all orders of autheticated user")
 	@GetMapping
-	public ResponseEntity<?> listAllOrders(@RequestHeader (name=SecurityConstants.AUTHORIZATION_HEADER_KEY) String authorizationHeader) throws Exception{
+	public ResponseEntity<OrdersRespone> listAllOrders(@RequestHeader (name=SecurityConstants.AUTHORIZATION_HEADER_KEY) String authorizationHeader) throws UserNotFoundException, NoOrderFoundException{
 		String username = jwtUtil.extractUsernameFromAuthorizationHeader(authorizationHeader);
 		return ResponseEntity.ok(
 				OrdersRespone.builder()
@@ -55,8 +66,8 @@ public class OrdersController {
 	
 	@ApiOperation("Creates a new order for authenticated user")
 	@PostMapping("/create")
-	public ResponseEntity<?> createNewOrder(@RequestHeader (name=SecurityConstants.AUTHORIZATION_HEADER_KEY) String authorizationHeader,
-			@Valid @RequestBody NewOrderRequest newOrderRequest) throws Exception{
+	public ResponseEntity<NewOrderResponse> createNewOrder(@RequestHeader (name=SecurityConstants.AUTHORIZATION_HEADER_KEY) String authorizationHeader,
+			@Valid @RequestBody NewOrderRequest newOrderRequest) throws InsufficientStockCountException, UnableToInsertOrderContentsException, NoBooksFoundByBookIdsException, StockNotFoundException, UserNotFoundException, OrderNotInsertedException {
 		String username = jwtUtil.extractUsernameFromAuthorizationHeader(authorizationHeader);
 		return ResponseEntity.ok(
 				NewOrderResponse.builder()
@@ -68,14 +79,14 @@ public class OrdersController {
 	
 	@ApiOperation("Lists a specific order's content of authenticated user")
 	@GetMapping("/{order_id}")
-	public ResponseEntity<?> getOrderContent(@RequestHeader (name=SecurityConstants.AUTHORIZATION_HEADER_KEY) String authorizationHeader,
-			@PathVariable("order_id") @Valid @Min(1) Long orderId) throws Exception {
+	public ResponseEntity<OrderContentResponse> getOrderContent(@RequestHeader (name=SecurityConstants.AUTHORIZATION_HEADER_KEY) String authorizationHeader,
+			@PathVariable("order_id") @Valid @Min(1) Long orderId) throws OrderNotFoundException, UnableToGetOrderContentEntitiesException {
 		String username = jwtUtil.extractUsernameFromAuthorizationHeader(authorizationHeader);
 		return ResponseEntity.ok(
 				OrderContentResponse.builder()
 				.username(username)
 				.orderEntity(ordersService.getOrderByOrderId(orderId))
-				.orderContentEntities(ordersService.getContentEntities(orderId))
+				.orderContentEntities(orderContentService.getContentEntities(orderId))
 				.build()
 				);
 		

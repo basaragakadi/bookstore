@@ -26,7 +26,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final JwtUtil jwtUtil;
 
 	@Override
-	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws Exception {
+	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) {
 
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());

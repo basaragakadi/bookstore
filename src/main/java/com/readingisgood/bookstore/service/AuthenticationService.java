@@ -9,6 +9,6 @@ import com.readingisgood.bookstore.model.response.AuthenticationResponse;
  */
 public interface AuthenticationService {
 	
-	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest) throws Exception;
+	public AuthenticationResponse authenticate(AuthenticationRequest authenticationRequest);
 
 }

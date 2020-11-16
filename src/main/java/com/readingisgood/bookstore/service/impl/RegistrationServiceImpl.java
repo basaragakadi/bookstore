@@ -29,8 +29,7 @@ public class RegistrationServiceImpl implements RegistrationService {
 	
 	@Transactional
 	@Override
-	public RegistrationResponse register(RegistrationRequest registrationRequest) throws Exception {
-		
+	public RegistrationResponse register(RegistrationRequest registrationRequest) throws UserAlreadyExistsException, UserNotInsertedException {
 		if(userService.userExists(registrationRequest.getUsername()))
 			throw new UserAlreadyExistsException("Could not register user with username: " + registrationRequest.getUsername());
 		

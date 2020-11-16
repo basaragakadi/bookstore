@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.readingisgood.bookstore.model.request.AuthenticationRequest;
+import com.readingisgood.bookstore.model.response.AuthenticationResponse;
 import com.readingisgood.bookstore.service.AuthenticationService;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +28,7 @@ public class AuthenticationController {
 	
 	@ApiOperation(value = "Authenticate user with username and password")
 	@PostMapping("/authenticate")
-	public ResponseEntity<?> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+	public ResponseEntity<AuthenticationResponse> authenticate(@Valid @RequestBody AuthenticationRequest authenticationRequest) {
 		return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
 	}
 	

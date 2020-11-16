@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.readingisgood.bookstore.entity.UserEntity;
+import com.readingisgood.bookstore.exception.UserNotFoundException;
 import com.readingisgood.bookstore.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -29,10 +30,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		UserEntity userEntity = userService.getUserByUsername(username);
+		UserEntity userEntity;
 		
-		if(userEntity == null)
+		try {
+			userEntity = userService.getUserByUsername(username);
+		} catch (UserNotFoundException e) {
 			throw new UsernameNotFoundException("username: " + username + " not found");
+		}	
 		
 		return new User(userEntity.getUsername(), userEntity.getPassword(), new ArrayList<>());
 		

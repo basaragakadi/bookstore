@@ -8,27 +8,30 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.readingisgood.bookstore.entity.BookEntity;
-import com.readingisgood.bookstore.entity.OrderContentEntity;
 import com.readingisgood.bookstore.entity.OrderEntity;
 import com.readingisgood.bookstore.entity.UserEntity;
 import com.readingisgood.bookstore.enums.OrderStatus;
 import com.readingisgood.bookstore.exception.InsufficientStockCountException;
+import com.readingisgood.bookstore.exception.NoBooksFoundByBookIdsException;
 import com.readingisgood.bookstore.exception.OrderNotFoundException;
+import com.readingisgood.bookstore.exception.OrderNotInsertedException;
+import com.readingisgood.bookstore.exception.StockNotFoundException;
+import com.readingisgood.bookstore.exception.NoOrderFoundException;
+import com.readingisgood.bookstore.exception.UnableToInsertOrderContentsException;
+import com.readingisgood.bookstore.exception.UserNotFoundException;
 import com.readingisgood.bookstore.model.BookOrderModel;
 import com.readingisgood.bookstore.model.request.NewOrderRequest;
-import com.readingisgood.bookstore.repository.OrderContentRepository;
 import com.readingisgood.bookstore.repository.OrdersRepository;
 import com.readingisgood.bookstore.service.BookService;
+import com.readingisgood.bookstore.service.OrderContentService;
 import com.readingisgood.bookstore.service.OrdersService;
 import com.readingisgood.bookstore.service.StockService;
 import com.readingisgood.bookstore.service.UserService;
@@ -44,89 +47,84 @@ import lombok.AllArgsConstructor;
 public class OrdersServiceImpl implements OrdersService {
 
 	private final OrdersRepository ordersRepository;
-	private final OrderContentRepository orderContentRepository;
 
 	private final UserService userService;
 	private final StockService stockService;
 	private final BookService bookService;
+	private final OrderContentService orderContentService;
 
 	@Override
-	public OrderEntity getOrderByOrderId(Long orderId) throws Exception {
+	public OrderEntity getOrderByOrderId(Long orderId) throws OrderNotFoundException {
 		Optional<OrderEntity> optionalOrderEntity = ordersRepository.findById(orderId);
-		
+
 		if(optionalOrderEntity.isEmpty())
 			throw new OrderNotFoundException("Order not found with orderId: " + orderId);
-		
+
 		return optionalOrderEntity.get();
 	}
-	
+
 	@Override
-	public List<OrderEntity> listAllOrders(String username) throws Exception{
+	public List<OrderEntity> listAllOrders(String username) throws UserNotFoundException, NoOrderFoundException{
+		
 		UserEntity userEntity = userService.getUserByUsername(username);
-		return ordersRepository.findByUserId(userEntity.getId());
+		List<OrderEntity> orderEntities = ordersRepository.findByUserId(userEntity.getId());
+		
+		if(orderEntities.isEmpty())
+			throw new NoOrderFoundException("No order found for userId: " + userEntity.getId().toString());
+		
+		return orderEntities;
 	}
 
 	@Transactional
 	@Override
-	public OrderEntity createNewOrder(String username, @Valid NewOrderRequest newOrderRequest) throws Exception{
+	public OrderEntity createNewOrder(String username, @Valid NewOrderRequest newOrderRequest)
+			throws InsufficientStockCountException, UnableToInsertOrderContentsException, NoBooksFoundByBookIdsException, StockNotFoundException, UserNotFoundException, OrderNotInsertedException{
 
 		List<BookOrderModel> bookOrderModels = newOrderRequest.getBookOrderModels();
 
 		if(!stockService.isStockCountSufficient(bookOrderModels))
 			throw new InsufficientStockCountException("Insufficient stock");
 
-		Map<Long, Integer> bookIdCountMap = bookOrderModels.stream()
-				.collect(Collectors.toMap(BookOrderModel::getBookId, BookOrderModel::getCount));
-
-		List<Long> bookIds = bookIdCountMap.keySet().stream()
-				.collect(Collectors.toList());
+		Map<Long, Integer> bookIdCountMap = getBookIdCountMap(bookOrderModels);
+		List<Long> bookIds = extractBookIdsFromBookIdCountMap(bookIdCountMap);
 
 		List<BookEntity> bookEntities = bookService.getAllBooksByIds(bookIds);
-
-		BigDecimal totalPrice = calculateTotalPrice(bookEntities, bookIdCountMap);
-		
-		stockService.updateStockCountAfterNewOrder(bookOrderModels);
 
 		UserEntity userEntity = userService.getUserByUsername(username);
 
 		OrderEntity orderEntity = OrderEntity.builder()
 				.userId(userEntity.getId())
 				.orderDate(new java.sql.Date(new Date().getTime()))
-				.totalPrice(totalPrice)
+				.totalPrice(calculateTotalPrice(bookEntities, bookIdCountMap))
 				.status(OrderStatus.PREPARING.toString())
 				.build();
 
-		final OrderEntity finalorderEntity = ordersRepository.save(orderEntity);
+		final OrderEntity finalorderEntity = ordersRepository.saveAndFlush(orderEntity);
 
-		Set<OrderContentEntity> orderContentEntities = bookEntities.stream()
-				.map(e -> OrderContentEntity.builder()
-						.orderId(finalorderEntity.getId())
-						.bookId(e.getId())
-						.count(bookIdCountMap.get(e.getId()))
-						.price(e.getPrice())
-						.build())
-				.collect(Collectors.toSet());
-
-		orderContentRepository.saveAll(orderContentEntities);
+		orderContentService.saveOrderContentEntities(
+				orderContentService.generateOrderContentEntities(bookEntities, bookIdCountMap, finalorderEntity)
+				);
 		
+		stockService.updateStockCountAfterNewOrder(bookOrderModels);
+
 		return finalorderEntity;
 
 	}
 
-	/**
-	 * @param bookEntities
-	 * @param bookIdCountMap
-	 * @return
-	 */
 	private BigDecimal calculateTotalPrice(List<BookEntity> bookEntities, Map<Long, Integer> bookIdCountMap) {
 		return bookEntities.stream()
 				.map(e -> e.getPrice().multiply(new BigDecimal(bookIdCountMap.get(e.getId()))))
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 
-	@Override
-	public List<OrderContentEntity> getContentEntities(@Valid @Min(1) Long orderId) throws Exception{
-		 return orderContentRepository.findByOrderId(orderId);
+	private Map<Long, Integer> getBookIdCountMap(List<BookOrderModel> bookOrderModels) {
+		return bookOrderModels.stream()
+				.collect(Collectors.toMap(BookOrderModel::getBookId, BookOrderModel::getCount));
 	}
 
+	private List<Long> extractBookIdsFromBookIdCountMap(Map<Long, Integer> bookIdCountMap) {
+		return bookIdCountMap.keySet().stream()
+				.collect(Collectors.toList());
+	}
+	
 }

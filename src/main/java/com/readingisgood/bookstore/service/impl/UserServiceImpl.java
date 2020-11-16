@@ -3,6 +3,7 @@ package com.readingisgood.bookstore.service.impl;
 import org.springframework.stereotype.Service;
 
 import com.readingisgood.bookstore.entity.UserEntity;
+import com.readingisgood.bookstore.exception.UserNotFoundException;
 import com.readingisgood.bookstore.repository.UserRepository;
 import com.readingisgood.bookstore.service.UserService;
 
@@ -24,8 +25,14 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public UserEntity getUserByUsername(String username) {
-		return userRepository.findByUsername(username);
+	public UserEntity getUserByUsername(String username) throws UserNotFoundException{
+		UserEntity userEntity = userRepository.findByUsername(username);
+		
+		if(userEntity == null)
+			throw new UserNotFoundException("User not found with username: " + username);
+		
+		return userEntity;
+		
 	}
 	
 	@Override

@@ -26,7 +26,6 @@ import lombok.AllArgsConstructor;
  * Class for Jwt request filtering configuration.
  * OncePerRequestFilter and is chosen to require authentication for every request.
  * 
- * TODO catch exceptions thrown from this filter implementation and return response entity with ErrorResponseBody
  */
 @Component
 @AllArgsConstructor

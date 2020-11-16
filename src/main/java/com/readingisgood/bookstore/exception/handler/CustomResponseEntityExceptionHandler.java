@@ -14,9 +14,15 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.readingisgood.bookstore.exception.InsufficientStockCountException;
+import com.readingisgood.bookstore.exception.NoBooksFoundByBookIdsException;
+import com.readingisgood.bookstore.exception.NoOrderFoundException;
 import com.readingisgood.bookstore.exception.OrderNotFoundException;
+import com.readingisgood.bookstore.exception.OrderNotInsertedException;
 import com.readingisgood.bookstore.exception.StockNotFoundException;
+import com.readingisgood.bookstore.exception.UnableToGetOrderContentEntitiesException;
+import com.readingisgood.bookstore.exception.UnableToInsertOrderContentsException;
 import com.readingisgood.bookstore.exception.UserAlreadyExistsException;
+import com.readingisgood.bookstore.exception.UserNotFoundException;
 import com.readingisgood.bookstore.exception.UserNotInsertedException;
 import com.readingisgood.bookstore.model.error.ErrorResponseBody;
 
@@ -79,7 +85,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	}
 	
 	@ExceptionHandler(value = { AuthenticationException.class})
-	protected ResponseEntity<Object> handleBadCredentioans(
+	protected ResponseEntity<Object> handleAuthenticationException(
 			AuthenticationException ex, WebRequest request) {
 		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
 				.statusCode(HttpStatus.UNAUTHORIZED.value())
@@ -91,7 +97,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	}
 	
 	@ExceptionHandler(value = { InsufficientStockCountException.class})
-	protected ResponseEntity<Object> handleJwtSignatureException(
+	protected ResponseEntity<Object> handleInsufficientStockCountException(
 			InsufficientStockCountException ex, WebRequest request) {
 		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
 				.statusCode(HttpStatus.NOT_FOUND.value())
@@ -102,8 +108,20 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
+	@ExceptionHandler(value = { UserNotFoundException.class})
+	protected ResponseEntity<Object> handleUserNotFoundException(
+			UserNotFoundException ex, WebRequest request) {
+		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
+				.statusCode(HttpStatus.NOT_FOUND.value())
+				.timestamp(new Date())
+				.message(HttpStatus.NOT_FOUND.getReasonPhrase())
+				.description(ex.getMessage())
+				.build();
+		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
 	@ExceptionHandler(value = { StockNotFoundException.class})
-	protected ResponseEntity<Object> handleJwtSignatureException(
+	protected ResponseEntity<Object> handleStockNotFoundException(
 			StockNotFoundException ex, WebRequest request) {
 		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
 				.statusCode(HttpStatus.NOT_FOUND.value())
@@ -115,7 +133,7 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 	}
 	
 	@ExceptionHandler(value = { OrderNotFoundException.class})
-	protected ResponseEntity<Object> handleJwtSignatureException(
+	protected ResponseEntity<Object> handleOrderNotFoundException(
 			OrderNotFoundException ex, WebRequest request) {
 		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
 				.statusCode(HttpStatus.NOT_FOUND.value())
@@ -126,8 +144,32 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 	
+	@ExceptionHandler(value = { NoBooksFoundByBookIdsException.class})
+	protected ResponseEntity<Object> handleNoBooksFoundByBookIdsException(
+			NoBooksFoundByBookIdsException ex, WebRequest request) {
+		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
+				.statusCode(HttpStatus.NOT_FOUND.value())
+				.timestamp(new Date())
+				.message(HttpStatus.NOT_FOUND.getReasonPhrase())
+				.description(ex.getMessage())
+				.build();
+		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler(value = { UnableToGetOrderContentEntitiesException.class})
+	protected ResponseEntity<Object> handleUnableToGetOrderContentEntitiesException(
+			UnableToGetOrderContentEntitiesException ex, WebRequest request) {
+		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
+				.statusCode(HttpStatus.NOT_FOUND.value())
+				.timestamp(new Date())
+				.message(HttpStatus.NOT_FOUND.getReasonPhrase())
+				.description(ex.getMessage())
+				.build();
+		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
 	@ExceptionHandler(value = { UserNotInsertedException.class})
-	protected ResponseEntity<Object> handleJwtSignatureException(
+	protected ResponseEntity<Object> handleUserNotInsertedException(
 			UserNotInsertedException ex, WebRequest request) {
 		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
 				.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -136,6 +178,42 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 				.description(ex.getMessage())
 				.build();
 		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
+	
+	@ExceptionHandler(value = { UnableToInsertOrderContentsException.class})
+	protected ResponseEntity<Object> handleUnableToInsertOrderContentsException(
+			UnableToInsertOrderContentsException ex, WebRequest request) {
+		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
+				.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+				.timestamp(new Date())
+				.message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+				.description(ex.getMessage())
+				.build();
+		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
+	
+	@ExceptionHandler(value = { OrderNotInsertedException.class})
+	protected ResponseEntity<Object> handleOrderNotInsertedException(
+			OrderNotInsertedException ex, WebRequest request) {
+		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
+				.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+				.timestamp(new Date())
+				.message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+				.description(ex.getMessage())
+				.build();
+		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+	}
+	
+	@ExceptionHandler(value = { NoOrderFoundException.class})
+	protected ResponseEntity<Object> handleNoOrderFoundException(
+			NoOrderFoundException ex, WebRequest request) {
+		ErrorResponseBody errorResponseBody = ErrorResponseBody.builder()
+				.statusCode(HttpStatus.NOT_FOUND.value())
+				.timestamp(new Date())
+				.message(HttpStatus.NOT_FOUND.getReasonPhrase())
+				.description(ex.getMessage())
+				.build();
+		return super.handleExceptionInternal(ex, errorResponseBody, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
 
 }

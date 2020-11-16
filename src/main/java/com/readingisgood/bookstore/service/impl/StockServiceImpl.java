@@ -31,13 +31,13 @@ public class StockServiceImpl implements StockService {
 	private final StockRepository stockRepository;
 	
 	@Override
-	public List<StockEntity> getStockEntitiesByBookIds(List<Long> bookIds) throws Exception {
+	public List<StockEntity> getStockEntitiesByBookIds(List<Long> bookIds) {
 		return stockRepository.findByBookIdIn(bookIds);
 	}
 
 	@Override
 	public boolean isStockCountSufficient(@Valid @NotBlank(message = "bookOrderModels can not be blank") List<BookOrderModel> bookOrderModels)
-			throws Exception {
+			throws StockNotFoundException {
 		List<Long> bookIds = bookOrderModels.stream()
 			.map(BookOrderModel::getBookId)
 			.collect(Collectors.toList());
@@ -63,7 +63,7 @@ public class StockServiceImpl implements StockService {
 	}
 
 	@Override
-	public void updateStockCountAfterNewOrder(List<BookOrderModel> bookOrderModels) throws Exception {
+	public void updateStockCountAfterNewOrder(List<BookOrderModel> bookOrderModels) throws InsufficientStockCountException, StockNotFoundException {
 		
 		if(!isStockCountSufficient(bookOrderModels))
 			throw new InsufficientStockCountException("Insufficient stock");

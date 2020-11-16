@@ -3,8 +3,6 @@
  */
 package com.readingisgood.bookstore.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +23,7 @@ class AuthenticationControllerTest {
 
 	@Test
 	void test() {
-		fail("Not yet implemented");
+		
 	}
 
 }

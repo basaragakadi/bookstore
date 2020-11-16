@@ -19,5 +19,6 @@ public final class SecurityConstants {
 	
 	public static final String BEARER_TOKEN_PREFIX = "Bearer ";
 	public static final String AUTHORIZATION_HEADER_KEY = "Authorization";
+	public static final String SECRET_KEY = "SECRET";
 	
 }
