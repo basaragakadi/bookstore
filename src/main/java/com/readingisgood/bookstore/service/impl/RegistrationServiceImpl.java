@@ -43,18 +43,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 				.build();
 		
 		userEntity = userService.saveUser(userEntity);
-		
-		if(userEntity == null)
-			throw new UserNotInsertedException("Could not fetch user from db");
-		
-		Long userId = userEntity.getId();
 
 		Address address = registrationRequest.getAddress();
 		AddressEntity addressEntity = AddressEntity.builder()
 				.country(address.getCountry())
 				.city(address.getCity())
 				.details(address.getDetails())
-				.userId(userId)
+				.userId(userEntity.getId())
 				.build();
 		
 		addressService.saveAddress(addressEntity);

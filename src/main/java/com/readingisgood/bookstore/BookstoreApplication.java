@@ -1,4 +1,4 @@
-package com.readingisgood.bookstore.application;
+package com.readingisgood.bookstore;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,9 +13,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  *
  */
 @SpringBootApplication
-@ComponentScan("com.readingisgood.bookstore")
-@EntityScan("com.readingisgood.bookstore.entity")
-@EnableJpaRepositories("com.readingisgood.bookstore.repository")
+@ComponentScan
+@EntityScan
+@EnableJpaRepositories(basePackages="com.readingisgood.bookstore.repository")
 public class BookstoreApplication {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BookstoreApplication.class);

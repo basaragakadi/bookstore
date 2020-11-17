@@ -34,16 +34,16 @@ public class AddressEntity {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 	
-	@Column(name = "country", unique = false, nullable = false)
+	@Column(name = "country", nullable = false)
 	private String country;
 	
-	@Column(name = "city", unique = false, nullable = false)
+	@Column(name = "city", nullable = false)
 	private String city;
 	
-	@Column(name = "details", unique = false, nullable = false)
+	@Column(name = "details", nullable = false)
 	private String details;
 	
-	@Column(name = "user_id", unique = false, nullable = false)
+	@Column(name = "user_id", nullable = false)
 	private Long userId;
 	
 }

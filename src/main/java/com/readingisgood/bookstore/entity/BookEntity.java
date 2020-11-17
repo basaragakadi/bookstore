@@ -36,13 +36,13 @@ public class BookEntity {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 	
-	@Column(name = "title", unique = false, nullable = false)
+	@Column(name = "title", nullable = false)
 	private String title;
 	
-	@Column(name = "author", unique = false, nullable = false)
+	@Column(name = "author", nullable = false)
 	private String author;
 	
-	@Column(name = "price", unique = false, nullable = false)
+	@Column(name = "price", nullable = false)
 	private BigDecimal price;
 	
 }

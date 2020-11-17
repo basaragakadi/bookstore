@@ -3,6 +3,7 @@ package com.readingisgood.bookstore.model.request;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Data
+@Builder
 @RequiredArgsConstructor
 public class AuthenticationRequest {
 

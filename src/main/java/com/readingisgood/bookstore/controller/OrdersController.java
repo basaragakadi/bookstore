@@ -48,9 +48,9 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/orders")
 public class OrdersController {
 
-	private JwtUtil jwtUtil;
-	private OrdersService ordersService;
-	private OrderContentService orderContentService;
+	private final JwtUtil jwtUtil;
+	private final OrdersService ordersService;
+	private final OrderContentService orderContentService;
 	
 	@ApiOperation("Lists all orders of autheticated user")
 	@GetMapping

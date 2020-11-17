@@ -37,7 +37,7 @@ public class StockEntity {
 	@Column(name = "book_id", unique = true, nullable = false)
 	private Long bookId;
 	
-	@Column(name = "count", unique = false, nullable = false)
+	@Column(name = "count", nullable = false)
 	private Integer count;
 	
 }

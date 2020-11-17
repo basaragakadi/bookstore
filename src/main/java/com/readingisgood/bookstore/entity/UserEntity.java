@@ -34,19 +34,19 @@ public class UserEntity {
 	@Column(name = "username", unique = true, nullable = false)
 	private String username;
 	
-	@Column(name = "password", unique = false, nullable = false)
+	@Column(name = "password", nullable = false)
 	private String password;
 	
 	@Column(name = "email", unique = true, nullable = false)
 	private String email;
 	
-	@Column(name = "name", unique = false, nullable = false)
+	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Column(name = "surname", unique = false, nullable = false)
+	@Column(name = "surname", nullable = false)
 	private String surname;
 	
-	@Column(name = "phone", unique = false, nullable = false)
+	@Column(name = "phone", nullable = false)
 	private String phone;
 	
 }

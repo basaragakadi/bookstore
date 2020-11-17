@@ -8,8 +8,9 @@ import javax.validation.constraints.Size;
 
 import com.readingisgood.bookstore.model.Address;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
 
 /**
  * @author basaragakadi
@@ -18,7 +19,8 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Data
-@RequiredArgsConstructor
+@Builder
+@AllArgsConstructor
 public class RegistrationRequest {
 
 	@NotBlank(message = "Username must not be blank")

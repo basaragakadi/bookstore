@@ -37,16 +37,16 @@ public class OrderEntity {
 	@Column(name = "id", unique = true, nullable = false)
 	private Long id;
 	
-	@Column(name = "user_id", unique = false, nullable = false)
+	@Column(name = "user_id", nullable = false)
 	private Long userId;
 	
-	@Column(name = "order_date", unique = false, nullable = false)
+	@Column(name = "order_date", nullable = false)
 	private Date orderDate;
 	
-	@Column(name = "total_price", unique = false, nullable = false)
+	@Column(name = "total_price", nullable = false)
 	private BigDecimal totalPrice;
 	
-	@Column(name = "status", unique = false, nullable = false)
+	@Column(name = "status", nullable = false)
 	private String status;
 	
 }
