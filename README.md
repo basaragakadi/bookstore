@@ -34,3 +34,6 @@ docker-compose down
 | Fetching orders of a user  | /orders                | GET    | Fetches given user's orders from H2 Database. Username is extracted from Bearer Token which is required in request header
 | Fetching an order's contents  | /orders/{order_id}                | GET    | Fetches contents of a unique order from H2 Database
 | Creating a new order  | /orders/create                | POST    | Creates a new order according to request with bookIds and count information. An order with multiple books can be created with multiple BookOrderModels.
+
+## Swagger
+Swagger is available under localhost:8080/swagger-ui.html
