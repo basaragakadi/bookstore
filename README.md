@@ -28,7 +28,7 @@ docker-compose down
 ### Swagger
 Swagger is available under localhost:8080/swagger-ui.html
 
-### H2 Databaase
+### H2 Database
 H2 console is available under localhost:8080/h2-console
 
 ### Endpoints
