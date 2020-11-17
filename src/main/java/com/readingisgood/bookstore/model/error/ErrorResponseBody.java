@@ -17,9 +17,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class ErrorResponseBody {
 
-	private int statusCode;
-	private Date timestamp;
-	private String message;
-	private String description;
+	private final int statusCode;
+	private final Date timestamp;
+	private final String message;
+	private final String description;
 	
 }

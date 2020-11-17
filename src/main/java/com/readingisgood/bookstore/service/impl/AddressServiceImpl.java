@@ -19,7 +19,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
-	private AddressRepository addressRepository;
+	private final AddressRepository addressRepository;
 	
 	@Override
 	public AddressEntity saveAddress(AddressEntity addressEntity) {

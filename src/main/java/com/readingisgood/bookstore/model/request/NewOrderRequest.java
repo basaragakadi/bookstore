@@ -13,7 +13,6 @@ import com.readingisgood.bookstore.model.BookOrderModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * @author basaragakadi
@@ -24,11 +23,10 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 public class NewOrderRequest {
 
 	@NotNull(message = "bookOrderModels must not be null")
 	@NotEmpty(message = "bookOrderModels must not be empty")
-	private List<BookOrderModel> bookOrderModels;
+	private final List<BookOrderModel> bookOrderModels;
 	
 }

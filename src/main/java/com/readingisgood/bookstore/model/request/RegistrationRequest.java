@@ -33,19 +33,19 @@ public class RegistrationRequest {
 	
 	@NotBlank(message = "Password must not be blank")
 	@Email(message = "E-mail must be valid")
-	private String email;
+	private final String email;
 	
 	@NotBlank(message = "Name must not be blank")
-	private String name;
+	private final String name;
 	
 	@NotBlank(message = "Surname must not be blank")
-	private String surname;
+	private final String surname;
 	
 	@NotBlank(message = "Phone must not be blank")
-	private String phone;
+	private final String phone;
 	
 	@Valid
 	@NotNull(message = "Address must not be null")
-	private Address address;
+	private final Address address;
 	
 }

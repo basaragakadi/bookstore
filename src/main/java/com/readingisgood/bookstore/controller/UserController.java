@@ -28,7 +28,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/user")
 public class UserController {
 
-	private RegistrationService registrationService;
+	private final RegistrationService registrationService;
 	
 	@ApiOperation("Registers a new user")
 	@PostMapping("/register")
