@@ -3,9 +3,9 @@
  */
 package com.readingisgood.bookstore.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author basaragakadi
@@ -15,7 +15,7 @@ import lombok.Data;
  */
 @Data
 @Builder
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookOrderModel {
 
 	private final Long bookId;
