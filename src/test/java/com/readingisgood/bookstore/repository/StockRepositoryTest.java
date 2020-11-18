@@ -3,8 +3,8 @@
  */
 package com.readingisgood.bookstore.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,15 +66,15 @@ class StockRepositoryTest {
 				.map(StockEntity::getBookId)
 				.collect(Collectors.toList());
 		
-		assertThat(stockRepository.findByBookIdIn(bookIds).size() == 0);
+		assertTrue(stockRepository.findByBookIdIn(bookIds).size() == 0);
 		
 		stockRepository.saveAll(stockEntities);
 		
 		stockEntities = stockRepository.findByBookIdIn(bookIds);
 		
 		assertNotNull(stockEntities);
-		assertThat(stockEntities.size() > 0);
-		assertThat(stockEntities.size() == bookIds.size());
+		assertTrue(stockEntities.size() > 0);
+		assertTrue(stockEntities.size() == bookIds.size());
 		
 	}
 

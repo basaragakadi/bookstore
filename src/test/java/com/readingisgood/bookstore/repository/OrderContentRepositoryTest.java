@@ -3,8 +3,8 @@
  */
 package com.readingisgood.bookstore.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -82,7 +82,7 @@ class OrderContentRepositoryTest {
 		List<OrderContentEntity> orderContentEntities2 = orderContentRepository.findByOrderId(orderContentEntity.getOrderId());
 		
 		assertNotNull(orderContentEntities2);
-		assertThat(orderContentEntities.size() > 0);
+		assertTrue(orderContentEntities.size() > 0);
 		
 	}
 
